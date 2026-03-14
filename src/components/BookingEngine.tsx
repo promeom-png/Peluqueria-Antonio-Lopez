@@ -15,6 +15,7 @@ import {
   X
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/src/lib/utils";
 
 const getAi = () => {
@@ -178,7 +179,9 @@ export default function BookingEngine() {
 
   if (success) {
     return (
-      <div 
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         className="max-w-xl mx-auto bg-white rounded-[2.5rem] p-12 text-center shadow-2xl border border-neutral-100"
       >
         <div className="w-24 h-24 bg-olive/10 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -194,7 +197,7 @@ export default function BookingEngine() {
         >
           Finalizar
         </button>
-      </div>
+      </motion.div>
     );
   }
 
@@ -222,10 +225,15 @@ export default function BookingEngine() {
         </div>
 
         <div className="p-6 md:p-10">
-          {step === 1 && (
-            <div
-              className="space-y-8"
-            >
+          <AnimatePresence mode="wait">
+            {step === 1 && (
+              <motion.div
+                key="step1"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-8"
+              >
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                   <div className="text-left">
                     <h2 className="text-3xl font-serif">Elige Día y Hora</h2>
@@ -325,13 +333,18 @@ export default function BookingEngine() {
                   >
                     Siguiente <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
-            </div>
-          )}
+                </div>
+              </motion.div>
+            )}
 
-          {step === 2 && (
-            <div
-              className="space-y-8"
-            >
+            {step === 2 && (
+              <motion.div
+                key="step2"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-8"
+              >
                 <h2 className="text-3xl font-serif">Selecciona el Servicio</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -386,13 +399,18 @@ export default function BookingEngine() {
                   >
                     Continuar
                   </button>
-            </div>
-          )}
+                </div>
+              </motion.div>
+            )}
 
-          {step === 3 && (
-            <div
-              className="space-y-8"
-            >
+            {step === 3 && (
+              <motion.div
+                key="step3"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-8"
+              >
                 <h2 className="text-3xl font-serif">Tus Datos</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
@@ -448,13 +466,18 @@ export default function BookingEngine() {
                   >
                     Siguiente
                   </button>
-            </div>
-          )}
+                </div>
+              </motion.div>
+            )}
 
-          {step === 4 && (
-            <div
-              className="space-y-8 text-center"
-            >
+            {step === 4 && (
+              <motion.div
+                key="step4"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                className="space-y-8 text-center"
+              >
                 <div className="w-20 h-20 bg-olive/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Sparkles className="w-10 h-10 text-olive" />
                 </div>
@@ -498,13 +521,16 @@ export default function BookingEngine() {
                     </div>
                   </div>
                 )}
-            </div>
-          )}
+              </motion.div>
+            )}
 
-          {step === 5 && (
-            <div
-              className="space-y-8"
-            >
+            {step === 5 && (
+              <motion.div
+                key="step5"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-8"
+              >
                 <h2 className="text-3xl font-serif">Resumen Final</h2>
                 
                 <div className="bg-neutral-900 text-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
@@ -560,8 +586,10 @@ export default function BookingEngine() {
                     {bookingLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
                     Confirmar y Bloquear Cita
                   </button>
-            </div>
-          )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       
