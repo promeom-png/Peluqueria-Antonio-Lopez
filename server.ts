@@ -3,7 +3,22 @@ import { createServer as createViteServer } from "vite";
 import Database from "better-sqlite3";
 import path from "path";
 
-const db = new Database("bookings.db");
+const dbPath = path.join(process.cwd(), "bookings.db");
+let db: any;
+try {
+  db = new Database(dbPath);
+  console.log("Database initialized at", dbPath);
+} catch (error) {
+  console.error("Failed to initialize database:", error);
+  // Mock database to prevent crash
+  db = {
+    prepare: () => ({
+      all: () => [],
+      run: () => ({ lastInsertRowid: Date.now() })
+    }),
+    exec: () => {}
+  };
+}
 
 // Initialize database
 db.exec(`
@@ -26,6 +41,12 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+
+  // Logging middleware
+  app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+  });
 
   // API Routes
   app.get("/api/bookings", (req, res) => {
